@@ -4,16 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import com.google.android.material.card.MaterialCardView
-import com.woojun.again_android.MainActivity
 import com.woojun.again_android.R
-import com.woojun.again_android.data.LoginRequest
-import com.woojun.again_android.data.LoginResponse
 import com.woojun.again_android.data.RegisterRequest
 import com.woojun.again_android.data.RegisterResponse
 import com.woojun.again_android.database.Preferences
-import com.woojun.again_android.database.Preferences.loadFCM
 import com.woojun.again_android.databinding.ActivityHobbyBinding
 import com.woojun.again_android.network.RetrofitAPI
 import com.woojun.again_android.network.RetrofitClient
