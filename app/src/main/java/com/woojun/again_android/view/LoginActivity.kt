@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
                     Handler().postDelayed({
                         loadingDialog.dismiss()
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                        finish()
+                        finishAffinity()
                     }, 500)
                 } else {
                     setDialogText("로그인 실패")
