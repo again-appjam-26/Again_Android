@@ -10,6 +10,5 @@ data class AppInfo(
     val id: Long = 0,
     val name: String,
     val packageName: String,
-    val icon: Drawable,
     var isChecked: Boolean = false
 )

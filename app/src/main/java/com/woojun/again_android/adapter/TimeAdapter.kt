@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.woojun.again_android.R
 import com.woojun.again_android.data.AppTimeInfo
 import com.woojun.again_android.databinding.TimeItemBinding
 
@@ -29,7 +30,8 @@ class TimeAdapter(private val appList: MutableList<AppTimeInfo>): RecyclerView.A
         fun bind(appInfo: AppTimeInfo) {
             if (binding.root.context != null) {
                 Glide.with(binding.root.context)
-                    .load(appInfo.icon)
+                    .load(R.drawable.d_logo)
+                    .centerCrop()
                     .into(binding.appIcon)
 
                 binding.appTitle.text = appInfo.name

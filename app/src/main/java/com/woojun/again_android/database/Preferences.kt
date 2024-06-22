@@ -59,4 +59,16 @@ object Preferences {
         return sharedPreferences.getLong("app_time", 0)
     }
 
+    fun saveFirstDate(context: Context, date: String) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString("first_date", date)
+        editor.apply()
+    }
+
+    fun loadFirstDate(context: Context): String? {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("first_date", null)
+    }
+
 }

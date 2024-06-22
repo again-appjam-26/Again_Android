@@ -3,6 +3,7 @@ package com.woojun.again_android.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.woojun.again_android.database.Preferences.loadTime
 import com.woojun.again_android.database.Preferences.loadToken
@@ -24,6 +25,10 @@ class SettingActivity : AppCompatActivity() {
         binding.apply {
             val time = loadTime(this@SettingActivity)
             timeText.text = "${time/60}시간 ${time%60}분"
+
+            backButton.setOnClickListener {
+                finish()
+            }
 
             logoutButton.setOnClickListener {
                 resetToken(this@SettingActivity)

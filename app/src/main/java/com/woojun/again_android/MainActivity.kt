@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +34,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Thread.sleep
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -49,7 +51,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this@MainActivity, SettingActivity::class.java))
             }
 
-
             if (loadDate(this@MainActivity) != getDate()) {
                 val yesterdayTime = loadTime(this@MainActivity)
                 val nowTime = yesterdayTime - (yesterdayTime/20)
@@ -63,11 +64,12 @@ class MainActivity : AppCompatActivity() {
                 saveAppTime(this@MainActivity, 0)
             }
 
-            if (!isAccessibilityServiceEnabled()) {
-                showAccessibilityServiceDialog()
-            }
+            Log.d("확인", loadTime(this@MainActivity).toString())
 
             val time = loadTime(this@MainActivity)
+
+            binding.nowTime.text = "오늘은 도파민 사용 시간이\n${time/60}시간 ${time%60}분 남았어요!"
+
             val tomorrowTime = time - (time/20)
 
             textView5.text = "내일의 도파민 할당 시간 : ${tomorrowTime/60}시간 ${tomorrowTime%60}분"
@@ -76,7 +78,9 @@ class MainActivity : AppCompatActivity() {
             binding.appList.layoutManager = LinearLayoutManager(this@MainActivity)
 
             CoroutineScope(Dispatchers.IO).launch {
+                sleep(3300)
                 val list = postInterest()
+                Log.d("확인2", list.toString())
                 if (list != null) {
                     binding.suggestList.adapter = SuggestAdapter(list.toMutableList())
                     binding.suggestList.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -86,6 +90,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun postInterest(): List<Suggest>? {
+        Log.d("확인1", loadToken(this@MainActivity)!!)
 
         return try {
             withContext(Dispatchers.IO) {
@@ -100,6 +105,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
+            Log.d("확인", e.toString())
             null
         }
     }
@@ -107,6 +113,9 @@ class MainActivity : AppCompatActivity() {
     private fun isAccessibilityServiceEnabled(): Boolean {
         val expectedComponentName = ComponentName(this, AppBlockAccessibilityService::class.java)
         val enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+        if (enabledServices.isNullOrEmpty()) {
+            return false
+        }
         val colonSplitter = TextUtils.SimpleStringSplitter(':')
         colonSplitter.setString(enabledServices)
 
@@ -161,8 +170,7 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val appInfo = packageManager.getApplicationInfo(packageName, 0)
                     val appName = packageManager.getApplicationLabel(appInfo).toString()
-                    val icon = packageManager.getApplicationIcon(appInfo)
-                    appUsageInfoList.add(AppTimeInfo(appName, icon, totalTimeInForeground.toString()))
+                    appUsageInfoList.add(AppTimeInfo(appName, totalTimeInForeground.toString()))
                 } catch (e: PackageManager.NameNotFoundException) {
                     e.printStackTrace()
                 }
@@ -180,7 +188,7 @@ class MainActivity : AppCompatActivity() {
             val hours = appUsageInfo.time.toLong() / (1000 * 60 * 60)
             val minutes = (appUsageInfo.time.toLong() / (1000 * 60)) % 60
 
-            list.add(AppTimeInfo(appUsageInfo.name, appUsageInfo.icon, "${hours}시 ${minutes}분"))
+            list.add(AppTimeInfo(appUsageInfo.name, "${hours}시 ${minutes}분"))
         }
 
         return list

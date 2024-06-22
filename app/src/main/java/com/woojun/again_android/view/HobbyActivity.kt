@@ -38,6 +38,10 @@ class HobbyActivity : AppCompatActivity() {
         val id = intent.getStringExtra("id")
         val password = intent.getStringExtra("password")
 
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+
         binding.gameButton.setOnClickListener {
             isGame = if (!isGame) {
                 (it as MaterialCardView).setCardBackgroundColor(resources.getColor(R.color.yellow))

@@ -2,11 +2,16 @@ package com.woojun.again_android.view
 
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.text.TextUtils
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.woojun.again_android.MainActivity
 import com.woojun.again_android.adapter.AppAdapter
@@ -17,6 +22,7 @@ import com.woojun.again_android.database.Preferences.saveAppTime
 import com.woojun.again_android.database.Preferences.saveDate
 import com.woojun.again_android.database.Preferences.saveTime
 import com.woojun.again_android.databinding.ActivityFilterBinding
+import com.woojun.again_android.service.AppBlockAccessibilityService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,7 +38,15 @@ class FilterActivity : AppCompatActivity() {
         binding = ActivityFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val checkedList = intent.getStringArrayExtra("checkedList")
+
+        startActivityForResult(Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS), 1)
+
+
+        if (!isAccessibilityServiceEnabled()) {
+            showAccessibilityServiceDialog()
+        }
+
+        val checkedList = intent.getStringArrayListExtra("checkedList")
         val filterList = filterAppInfoByName(getAppInfo(), checkedList!!.toList())
 
         val mainAdapter = AppAdapter(filterList.toMutableList())
@@ -58,9 +72,41 @@ class FilterActivity : AppCompatActivity() {
             }
         }
 
-        binding.nextButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish()
         }
+    }
+
+    private fun isAccessibilityServiceEnabled(): Boolean {
+        val expectedComponentName = ComponentName(this, AppBlockAccessibilityService::class.java)
+        val enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+        if (enabledServices.isNullOrEmpty()) {
+            return false
+        }
+        val colonSplitter = TextUtils.SimpleStringSplitter(':')
+        colonSplitter.setString(enabledServices)
+
+        while (colonSplitter.hasNext()) {
+            val componentNameString = colonSplitter.next()
+            val enabledComponent = ComponentName.unflattenFromString(componentNameString)
+            if (enabledComponent != null && enabledComponent == expectedComponentName) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private fun showAccessibilityServiceDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("권한 필요")
+            .setMessage("앱을 사용하려면 접근성 서비스 권한이 필요합니다.")
+            .setPositiveButton("설정으로 이동") { _, _ ->
+                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                startActivity(intent)
+            }
+            .setNegativeButton("취소", null)
+            .show()
     }
 
     private fun getDate(): String {
@@ -70,6 +116,8 @@ class FilterActivity : AppCompatActivity() {
     }
 
     private fun timeCalculation(context: Context, packageNames: List<String>): Long {
+
+
         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
         val endTime = System.currentTimeMillis()
@@ -80,12 +128,14 @@ class FilterActivity : AppCompatActivity() {
         )
 
         var time: Long = 0
+        Log.d("확인1", "$usageStatsList")
 
         for (usageStats in usageStatsList) {
             val packageName = usageStats.packageName
             if (packageNames.contains(packageName)) {
                 val totalTimeInForeground = usageStats.totalTimeInForeground
                 val totalTimeInMinutes = TimeUnit.MILLISECONDS.toMinutes(totalTimeInForeground)
+                Log.d("확인", "$time, $totalTimeInMinutes")
                 time+=totalTimeInMinutes
             }
         }
@@ -105,7 +155,7 @@ class FilterActivity : AppCompatActivity() {
             val packageName = it.packageName
             val appIcon = appInfo.loadIcon(packageManager)
 
-            AppInfo(name = appName, packageName = packageName, icon = appIcon)
+            AppInfo(name = appName, packageName = packageName)
         }
     }
 

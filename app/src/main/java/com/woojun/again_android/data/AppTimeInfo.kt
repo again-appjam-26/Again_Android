@@ -4,6 +4,5 @@ import android.graphics.drawable.Drawable
 
 data class AppTimeInfo(
     val name: String,
-    val icon: Drawable,
     val time: String
 )
