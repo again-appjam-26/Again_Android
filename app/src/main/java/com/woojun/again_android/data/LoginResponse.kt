@@ -5,8 +5,3 @@ data class LoginResponse(
     val message: String,
     val status: Int
 )
-
-data class Data(
-    val accessToken: String,
-    val refreshToken: String
-)
