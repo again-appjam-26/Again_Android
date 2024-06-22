@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,6 +9,14 @@ android {
     namespace = "com.woojun.again_android"
     compileSdk = 34
 
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { localProperties.load(it) }
+    }
+
+    val baseUrl = localProperties.getProperty("baseUrl") ?: ""
+
     defaultConfig {
         applicationId = "com.woojun.again_android"
         minSdk = 29
@@ -15,6 +25,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "baseUrl", "\"$baseUrl\"")
+        resValue("string", "baseUrl", baseUrl)
     }
 
     buildTypes {
@@ -29,6 +42,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        buildConfig = true
     }
     viewBinding {
         enable = true
