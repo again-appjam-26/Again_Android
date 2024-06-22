@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.InputType
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.woojun.again_android.MainActivity
 import com.woojun.again_android.R
 import com.woojun.again_android.data.LoginRequest
 import com.woojun.again_android.data.LoginResponse
@@ -71,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
                     setDialogText("로그인 완료")
                     Handler().postDelayed({
                         loadingDialog.dismiss()
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        startActivity(Intent(this@LoginActivity, CheckActivity::class.java))
                         finishAffinity()
                     }, 500)
                 } else {
