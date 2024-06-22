@@ -143,14 +143,14 @@ class HobbyActivity : AppCompatActivity() {
         return categories
     }
 
-    fun postRegister(id: String, password: String) {
+    private fun postRegister(id: String, password: String) {
         val (loadingDialog, setDialogText) = Dialog.createLoadingDialog(this)
         setDialogText("회원가입 시도 중")
         loadingDialog.show()
 
         val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
         val call: Call<RegisterResponse> = retrofitAPI.postRegister(
-            RegisterRequest(loadFCM(this)!!, checkHobby(), id, password)
+            RegisterRequest(checkHobby(), id, password)
         )
 
         call.enqueue(object : Callback<RegisterResponse> {
