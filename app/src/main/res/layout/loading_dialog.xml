@@ -14,7 +14,7 @@
         android:layout_margin="16dp"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_colorFilter="@color/gray_100"
+        app:lottie_colorFilter="@color/yellow"
         app:lottie_rawRes="@raw/loading" />
 
     <TextSwitcher
