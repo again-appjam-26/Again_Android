@@ -10,6 +10,8 @@ import com.woojun.again_android.data.RegisterResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 
@@ -28,4 +30,7 @@ interface RetrofitAPI {
     suspend fun postCheckApp(
         @Body body: CheckAppsRequest
     ): Response<CheckAppResponse>
+
+    @DELETE
+    fun deleteUser(@Header("Authorization") authorization: String): Call<Void>
 }
