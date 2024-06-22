@@ -21,6 +21,7 @@ import com.woojun.again_android.data.Suggest
 import com.woojun.again_android.database.Preferences.loadDate
 import com.woojun.again_android.database.Preferences.loadTime
 import com.woojun.again_android.database.Preferences.loadToken
+import com.woojun.again_android.database.Preferences.saveAppTime
 import com.woojun.again_android.database.Preferences.saveDate
 import com.woojun.again_android.database.Preferences.saveTime
 import com.woojun.again_android.databinding.ActivityMainBinding
@@ -58,6 +59,8 @@ class MainActivity : AppCompatActivity() {
                 if (nowTime > 120) {
                     saveTime(this@MainActivity, nowTime)
                 }
+
+                saveAppTime(this@MainActivity, 0)
             }
 
             if (!isAccessibilityServiceEnabled()) {

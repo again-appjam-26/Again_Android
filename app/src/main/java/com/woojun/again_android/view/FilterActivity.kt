@@ -12,6 +12,8 @@ import com.woojun.again_android.MainActivity
 import com.woojun.again_android.adapter.AppAdapter
 import com.woojun.again_android.data.AppInfo
 import com.woojun.again_android.database.AppDatabase
+import com.woojun.again_android.database.Preferences
+import com.woojun.again_android.database.Preferences.saveAppTime
 import com.woojun.again_android.database.Preferences.saveDate
 import com.woojun.again_android.database.Preferences.saveTime
 import com.woojun.again_android.databinding.ActivityFilterBinding
@@ -48,6 +50,7 @@ class FilterActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     saveTime(this@FilterActivity, timeCalculation(this@FilterActivity, item.map { it.packageName }))
                     saveDate(this@FilterActivity, getDate())
+                    saveAppTime(this@FilterActivity, 0)
 
                     startActivity(Intent(this@FilterActivity, MainActivity::class.java))
                     finishAffinity()
