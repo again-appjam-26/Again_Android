@@ -1,20 +1,16 @@
 package com.woojun.again_android.network
 
 import com.woojun.again_android.BuildConfig
+import com.woojun.again_android.data.CheckAppResponse
+import com.woojun.again_android.data.CheckAppsRequest
 import com.woojun.again_android.data.LoginRequest
 import com.woojun.again_android.data.LoginResponse
 import com.woojun.again_android.data.RegisterRequest
 import com.woojun.again_android.data.RegisterResponse
-import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Part
 
 
 interface RetrofitAPI {
@@ -28,4 +24,8 @@ interface RetrofitAPI {
         @Body body: RegisterRequest
     ): Call<RegisterResponse>
 
+    @POST("${BuildConfig.baseUrl}check_apps")
+    suspend fun postCheckApp(
+        @Body body: CheckAppsRequest
+    ): Response<CheckAppResponse>
 }
