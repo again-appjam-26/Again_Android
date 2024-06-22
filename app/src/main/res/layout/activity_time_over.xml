@@ -4,6 +4,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".view.TimeOverActivity">
+
+    <TextView
+        android:id="@+id/textView10"
+        style="@style/PageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="96dp"
+        android:text="현재 앱 최대\n사용시간에 도달했어요"
+        android:textColor="@color/gray_100"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="건강한 도파민 추천"
+        app:layout_constraintStart_toStartOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/suggest_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:layout_marginBottom="16dp"
+        android:id="@+id/go_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="‘앱이름’을(를) 실행할게요."
+        android:textColor="@color/gray_90"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/finish_button"
+        app:layout_constraintEnd_toEndOf="@+id/finish_button"
+        app:layout_constraintStart_toStartOf="@+id/finish_button" />
+
+    <androidx.cardview.widget.CardView
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardBackgroundColor="@color/yellow"
+        android:id="@+id/finish_button"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_marginVertical="16dp"
+            style="@style/SubHeadLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메인화면으로 돌아갈게요"
+            android:textColor="@color/gray_100" />
+
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
