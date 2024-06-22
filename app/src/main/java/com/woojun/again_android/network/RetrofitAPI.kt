@@ -3,6 +3,7 @@ package com.woojun.again_android.network
 import com.woojun.again_android.BuildConfig
 import com.woojun.again_android.data.CheckAppResponse
 import com.woojun.again_android.data.CheckAppsRequest
+import com.woojun.again_android.data.InterestResponse
 import com.woojun.again_android.data.LoginRequest
 import com.woojun.again_android.data.LoginResponse
 import com.woojun.again_android.data.RegisterRequest
@@ -33,4 +34,7 @@ interface RetrofitAPI {
 
     @DELETE
     fun deleteUser(@Header("Authorization") authorization: String): Call<Void>
+
+    @POST("${BuildConfig.baseUrl}interest")
+    suspend fun postInterest(@Header("Authorization") authorization: String): Response<InterestResponse>
 }
