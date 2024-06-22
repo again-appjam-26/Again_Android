@@ -84,7 +84,6 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 setDialogText("로그인 실패")
-                Log.d("확인", t.toString())
                 Handler().postDelayed({
                     loadingDialog.dismiss()
                 }, 500)
