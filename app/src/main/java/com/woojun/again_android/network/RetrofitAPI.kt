@@ -3,6 +3,8 @@ package com.woojun.again_android.network
 import com.woojun.again_android.BuildConfig
 import com.woojun.again_android.data.LoginRequest
 import com.woojun.again_android.data.LoginResponse
+import com.woojun.again_android.data.RegisterRequest
+import com.woojun.again_android.data.RegisterResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
@@ -20,5 +22,10 @@ interface RetrofitAPI {
     fun postLogin(
         @Body body: LoginRequest
     ): Call<LoginResponse>
+
+    @POST("${BuildConfig.baseUrl}member/register")
+    fun postRegister(
+        @Body body: RegisterRequest
+    ): Call<RegisterResponse>
 
 }
